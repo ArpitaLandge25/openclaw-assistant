@@ -1,0 +1,5 @@
+• Developed Python project: file_organizer.py
+• Developed Python project: learning_tracker.py
+• Developed Python project: resume_builder.py
+• Developed Python project: search_tool.py
+• Developed Python project: task_reminder.py

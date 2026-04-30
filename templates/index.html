@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenClaw Smart Assistant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI';
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            margin: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #4facfe;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00c6ff;
+        }
+
+        #output {
+            margin: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🚀 OpenClaw Smart Assistant</h1>
+
+<div class="container">
+
+    <div class="card">
+        <h3>📂 Organize Files</h3>
+        <input id="orgPath" placeholder="Folder path">
+        <button onclick="organize()">Run</button>
+    </div>
+
+    <div class="card">
+        <h3>📊 Add Learning</h3>
+        <input id="learnInput" placeholder="What did you learn?">
+        <button onclick="addLearning()">Save</button>
+    </div>
+
+    <div class="card">
+        <h3>📄 Resume Generator</h3>
+        <input id="resumePath" placeholder="Folder path">
+        <button onclick="generateResume()">Generate</button>
+    </div>
+
+    <div class="card">
+        <h3>🔍 Search Files</h3>
+        <input id="searchPath" placeholder="Folder path">
+        <input id="keyword" placeholder="Keyword">
+        <button onclick="searchFiles()">Search</button>
+    </div>
+
+    <div class="card">
+        <h3>⏰ Task Manager</h3>
+        <input id="taskInput" placeholder="New task">
+        <button onclick="addTask()">Add Task</button>
+        <button onclick="showTasks()">Show Tasks</button>
+    </div>
+
+</div>
+
+<div id="output">👉 Output will appear here...</div>
+
+<script>
+function showOutput(data) {
+    document.getElementById("output").innerText = data;
+}
+
+function organize() {
+    fetch('/organize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: document.getElementById("orgPath").value })
+    })
+    .then(res => res.text())
+    .then(showOutput);
+}
+
+function addLearning() {
+    fetch('/learning', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entry: document.getElementById("learnInput").value })
+    })
+    .then(res => res.text())
+    .then(showOutput);
+}
+
+function generateResume() {
+    fetch('/resume', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: document.getElementById("resumePath").value })
+    })
+    .then(res => res.text())
+    .then(showOutput);
+}
+
+function searchFiles() {
+    fetch('/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            path: document.getElementById("searchPath").value,
+            keyword: document.getElementById("keyword").value
+        })
+    })
+    .then(res => res.text())
+    .then(showOutput);
+}
+
+function addTask() {
+    fetch('/add-task', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ task: document.getElementById("taskInput").value })
+    })
+    .then(res => res.text())
+    .then(showOutput);
+}
+
+function showTasks() {
+    fetch('/show-task')
+    .then(res => res.text())
+    .then(showOutput);
+}
+</script>
+
+</body>
+</html>
